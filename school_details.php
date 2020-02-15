@@ -19,10 +19,12 @@ $query = "INSERT INTO school(scode,sname,stype,date_of_visit,headname,phno,addre
 // echo $query;
 $result = mysqli_query($link,$query);
 if($result){
-    header('location:enter_student.php');
+    // header('location:enter_student.php');
+    print_r('1');
 }
 else{
-    header('location:enter_school.html');
+    print_r('0');
+    // header('location:enter_school.html');
 }
 
 

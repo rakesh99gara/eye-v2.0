@@ -60,6 +60,7 @@ nav {
 }
 .nav-links li {
   list-style: none;
+  font-family: PopLight;
 }
 
 .nav-links a {
@@ -165,6 +166,31 @@ footer {
   align-items: center;
   padding: 3vh 3vh 3vh 3vh;
   overflow-y: scroll;
+}
+
+div.school-table {
+  text-align: center;
+  height: 10vh;
+  width: 95%;
+  margin: auto;
+  margin-bottom: 2vh;
+}
+
+div.school-table table,
+td,
+th {
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid white;
+}
+th {
+  padding: 5px;
+  background-color: #242a47;
+  color: white;
+}
+td {
+  padding: 5px;
+  color: black;
 }
 
 .student-form {
