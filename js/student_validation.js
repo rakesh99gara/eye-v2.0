@@ -17,7 +17,7 @@ var error_spndvleftaxis = false;
 var error_advice = false;
 var flag = 0;
 
-$(function () {
+$(function() {
   $("#spnidno").hide();
   $("#spnadno").hide();
   $("#spnname").hide();
@@ -36,75 +36,75 @@ $(function () {
   $("#spndvleftaxis").hide();
   $("#spnadvice").hide();
 
-  $("#idno").focusout(function () {
+  $("#idno").focusout(function() {
     check_idno();
   });
 
-  $("#adno").focusout(function () {
+  $("#adno").focusout(function() {
     check_adno();
   });
 
-  $("#name").focusout(function () {
+  $("#name").focusout(function() {
     check_name();
   });
 
-  $("#dob").focusout(function () {
+  $("#dob").focusout(function() {
     check_dob();
   });
 
-  $("#age").focusout(function () {
+  $("#age").focusout(function() {
     check_age();
   });
 
-  $("#fname").focusout(function () {
+  $("#fname").focusout(function() {
     check_fname();
   });
 
-  $("#mname").focusout(function () {
+  $("#mname").focusout(function() {
     check_mname();
   });
 
-  $("#cno").focusout(function () {
+  $("#cno").focusout(function() {
     check_cno();
   });
 
-  $("#textcomplaintright").focusout(function () {
+  $("#textcomplaintright").focusout(function() {
     check_textcomplaintright();
   });
 
-  $("#textcomplaintleft").focusout(function () {
+  $("#textcomplaintleft").focusout(function() {
     check_textcomplaintleft();
   });
 
-  $("#oldpgrightaxis").focusout(function () {
+  $("#oldpgrightaxis").focusout(function() {
     check_oldpgrightaxis();
   });
 
-  $("#oldpgleftaxis").focusout(function () {
+  $("#oldpgleftaxis").focusout(function() {
     check_oldpgleftaxis();
   });
 
-  $("#arrightaxis").focusout(function () {
+  $("#arrightaxis").focusout(function() {
     check_arrightaxis();
   });
 
-  $("#arleftaxis").focusout(function () {
+  $("#arleftaxis").focusout(function() {
     check_arleftaxis();
   });
 
-  $("#dvrightaxis").focusout(function () {
+  $("#dvrightaxis").focusout(function() {
     check_dvrightaxis();
   });
 
-  $("#dvleftaxis").focusout(function () {
+  $("#dvleftaxis").focusout(function() {
     check_dvleftaxis();
   });
 
-  $("#advice").focusout(function () {
+  $("#advice").focusout(function() {
     check_advice();
   });
 
-  $("#subbtn").click(function () {
+  $("#student-form").submit(function() {
     error_spnidno = false;
     error_spnadno = false;
     error_spnname = false;
@@ -132,7 +132,7 @@ $(function () {
     check_mname();
     check_cno();
     check_textcomplaintright();
-    check_textcomplaintsleft();
+    check_textcomplaintleft();
     check_oldpgrightaxis();
     check_oldpgleftaxis();
     check_arrightaxis();
@@ -168,7 +168,6 @@ $(function () {
     }
   });
 });
-
 
 function check_idno() {
   var jid = $("#idno").val();
@@ -310,34 +309,40 @@ function check_cno() {
 }
 
 function check_textcomplaintright() {
-  var complaintright = $("#textcomplaintright").val();
-  if (complaintright == "") {
-    document.querySelector("#textcomplaintright").style.background =
-      "rgb(255, 154, 154)";
-    document.querySelector("#spntextcomplaintright").style.display = "block";
-    $("#spntextcomplaintright").html("** complaints");
-    $("#spntextcomplaintright").show();
-    error_spntextcomplaintright = true;
-  } else {
-    $("#spntextcomplaintright").hide();
-    document.querySelector("#textcomplaintright").style.background =
-      "rgb(144, 245, 131)";
+  var complaintright = $("#complaintsright").val();
+  var textcomplaintright = $("#textcomplaintright").val();
+  if (complaintright == "Others") {
+    if (textcomplaintright == "") {
+      document.querySelector("#textcomplaintright").style.background =
+        "rgb(255, 154, 154)";
+      document.querySelector("#spntextcomplaintright").style.display = "block";
+      $("#spntextcomplaintright").html("** complaints");
+      $("#spntextcomplaintright").show();
+      error_spntextcomplaintright = true;
+    } else {
+      $("#spntextcomplaintright").hide();
+      document.querySelector("#textcomplaintright").style.background =
+        "rgb(144, 245, 131)";
+    }
   }
 }
 
 function check_textcomplaintleft() {
-  var complaintleft = $("#textcomplaintleft").val();
-  if (complaintleft == "") {
-    document.querySelector("#textcomplaintleft").style.background =
-      "rgb(255, 154, 154)";
-    document.querySelector("#spntextcomplaintleft").style.display = "block";
-    $("#spntextcomplaintleft").html("** complaints");
-    $("#spntextcomplaintleft").show();
-    error_spntextcomplaintleft = true;
-  } else {
-    $("#spntextcomplaintleft").hide();
-    document.querySelector("#textcomplaintleft").style.background =
-      "rgb(144, 245, 131)";
+  var complaintleft = $("#complaintsleft").val();
+  var textcomplaintleft = $("#textcomplaintleft").val();
+  if (complaintleft == "Others") {
+    if (textcomplaintleft == "") {
+      document.querySelector("#textcomplaintleft").style.background =
+        "rgb(255, 154, 154)";
+      document.querySelector("#spntextcomplaintleft").style.display = "block";
+      $("#spntextcomplaintleft").html("** complaints");
+      $("#spntextcomplaintleft").show();
+      error_spntextcomplaintleft = true;
+    } else {
+      $("#spntextcomplaintleft").hide();
+      document.querySelector("#textcomplaintleft").style.background =
+        "rgb(144, 245, 131)";
+    }
   }
 }
 
@@ -481,16 +486,17 @@ function check_dvleftaxis() {
 
 function check_advice() {
   var adv = $("#advice").val();
-  if (adv == "") {
-    document.querySelector("#advice").style.background = "rgb(255, 154, 154)";
-    document.querySelector("#spnadvice").style.display = "block";
-    $("#spnadvice").html("** advice");
-    $("#spnadvice").show()
-    error_advice = true;
-  } else {
-    $("#spnadvice").hide();
-    document.querySelector("#advice").style.background =
-      "rgb(144, 245, 131)";
+  if ($("#oth").prop("checked")) {
+    if (adv == "") {
+      document.querySelector("#advice").style.background = "rgb(255, 154, 154)";
+      document.querySelector("#spnadvice").style.display = "block";
+      $("#spnadvice").html("** advice");
+      $("#spnadvice").show();
+      error_advice = true;
+    } else {
+      $("#spnadvice").hide();
+      document.querySelector("#advice").style.background = "rgb(144, 245, 131)";
+    }
   }
 }
 

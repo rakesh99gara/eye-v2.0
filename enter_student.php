@@ -12,7 +12,7 @@
     <title>MSHE|School Details</title>
     <link rel="stylesheet" href="css/enter_student.css" />
     <script src="js/jquery.js"></script>
-    <script src="js/student_validation.js"></script>
+    <!-- <script src="js/student_validation.js"></script> -->
   </head>
 
   <body>
@@ -70,17 +70,30 @@
 
         $("#student-form").on('submit',function(e){
           e.preventDefault();
-          var va = studentValidate();
-          if (va == 0) {
             $.ajax({
               url: $("#student-form").attr("action"),
               type: "POST",
               data: $("#student-form").serialize(),
               success: function(data) {
-                alert(data);
+                if(data == 1){
+                  $("#student-form").trigger("reset");
+                  var con = confirm(
+                    "Do you want printed receipt ?"
+                  );
+                  if (!con) {
+                  } else {
+                    $("#student-form").trigger("reset");
+                    window.location = "receipt.php";
+                  }
+                }
+                else{
+                  con = confirm("Student details already entered. Want to clear the fields ?");
+                  if(con){
+                    $("#student-form").trigger("reset");
+                  }
+                }
               }
             });
-          }
         });
 
         $("#adno").blur(function(){
@@ -2071,26 +2084,23 @@
               </fieldset>
               <fieldset class="advice-and-remarks">
                 <legend align="center">Advices and Remarks</legend>
-                <label
-                  ><input
+                <label>
+                  <input
                     type="checkbox"
                     name="rth"
                     id="rth"
                     value="rth"
-                  />Refer to Base Hospital</label
-                >
-                <label
-                  ><input type="checkbox" name="gp" id="gp" value="gp" />Glasses
-                  Presented</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    name="oth"
-                    id="oth"
-                    value="oth"
-                  />Others</label
-                >
+                  />Refer to Base Hospital</label>
+                  <label>
+                    <input type="checkbox" name="gp" id="gp" value="gp" />Glasses Presented</label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="oth"
+                      id="oth"
+                      value="oth"
+                    />Others
+                  </label>  
                 <input
                   type="text"
                   name="advice"

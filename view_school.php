@@ -8,25 +8,19 @@
   <title>MSHE|VIEW SCHOOL</title>
   <link rel="stylesheet" href="css/view_school.css">
   <script src="js/jquery.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href=" https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.dataTables.min.css ">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" charset="utf8" src=" https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js "></script>
+  <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+  <script type="text/javascript" src="DataTables/datatables.min.js"></script>
 </head>
 
 <body>
   <script>
-		$(document).ready( function () {
+    $(document).ready( function () {
       $('#school-table').DataTable({
-          fixedHeader: {
-            header: true,
-            footer: true
-        }
-      });  
-      alert("hii");
+        "pagingType": "simple_numbers",
+        responsive: true
+      });
     });
+
 	</script>
   <header>
     <nav>
@@ -50,7 +44,7 @@
   <main>
     <section>
       <div class="main-details">
-        <table class="school-table" id="school-table">
+        <table id="school-table" class="cell-border compact stripe school-table">
           <thead>
             <tr>
               <th>Scode </th>
@@ -73,8 +67,8 @@
                             while($row = mysqli_fetch_array($quer1)){
                                 $_SESSION['scode']=$row['scode'];
                                 $scode = $row['scode'];
-								$date_of_visi = $row['date_of_visit'];
-								$date_of_visit =(string)$date_of_visi; 
+                                $date_of_visi = $row['date_of_visit'];
+                                $date_of_visit =(string)$date_of_visi; 
                                 $qur = "SELECT COUNT(sid) FROM student as st WHERE st.scode=".$scode." AND st.date_of_visit="."'$date_of_visit'";
                                 $strength1 = mysqli_query($link,$qur);
                                 $strength = mysqli_fetch_array($strength1);
@@ -113,3 +107,6 @@
 </body>
 
 </html>
+
+
+

@@ -14,10 +14,10 @@ $address=$_POST['address'];
 $_SESSION['s_scode'] = $scode;
 $_SESSION['s_date'] = $date1;
 
-
-$query = "INSERT INTO school(scode,sname,stype,date_of_visit,headname,phno,address) VALUES($scode,'$sname','$stype','$date1','$headname','$phno','$address')";
-// echo $query;
-$result = mysqli_query($link,$query);
+$query = "INSERT INTO school(scode,sname,stype,date_of_visit,headname,phno,address) VALUES(?,?,?,?,?,?,?)";
+$stm = mysqli_prepare($link,$query);
+mysqli_stmt_bind_param($stm, "sssssss", $scode,$sname,$stype,$date1,$headname,$phno,$address);
+$result = mysqli_stmt_execute($stm);
 if($result){
     // header('location:enter_student.php');
     print_r('1');

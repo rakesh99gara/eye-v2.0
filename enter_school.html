@@ -19,6 +19,7 @@
         $("#form").on("submit", function(e) {
           e.preventDefault();
           var a = validate();
+          // alert(a);
           if (a == 0) {
             $.ajax({
               url: $("#form").attr("action"),
@@ -26,7 +27,7 @@
               data: $("#form").serialize(),
               success: function(data) {
                 if (data == 1) {
-                  $("form").trigger("reset");
+                  $("#form").trigger("reset");
                   window.location = "enter_student.php";
                 } else {
                   var con = confirm(
@@ -35,7 +36,7 @@
                   if (!con) {
                   } else {
                     $("form").trigger("reset");
-                    window.location = "enter_student.php";  
+                    window.location = "enter_student.php";
                   }
                 }
               }
