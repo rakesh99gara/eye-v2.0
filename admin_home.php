@@ -60,6 +60,7 @@ $row2 = mysqli_fetch_array($res2);
               $(".error").html("User Added");
               document.querySelector("#uname").value = "";
               document.querySelector("#pass").value = "";
+              setTimeout(() => { document.location.reload(true); }, 100);
             }
           }
         });
@@ -67,7 +68,9 @@ $row2 = mysqli_fetch_array($res2);
       $(".delete").click(function(){
         var uname = $(this).attr('id');
         mydata = 'uname=' + uname ; 
-        $.ajax({
+        con = confirm("Are you sure to delete "+uname+" ??");
+        if(con){
+          $.ajax({
           type: "POST",
           url: "del_user.php",
           data: mydata,
@@ -75,9 +78,44 @@ $row2 = mysqli_fetch_array($res2);
             setTimeout(() => { document.location.reload(true); }, 100);
           }
         });
-        
+        }
       });
-    });
+      $('#file_name').change(function() {
+        var f_name = $(".file_name").val();
+        // alert(f_name);
+        var spl = f_name.split('.');
+        if (spl[spl.length-1].toLowerCase() != 'csv') {
+          $('.up-error').html("Only CSV is allowed");
+        } 
+      });
+      // $('#upload-form').submit(function(e){
+      //   e.preventDefault();
+      //   var f_name = $(".file_name").val();
+      //   // alert(f_name);
+      //   var spl = f_name.split('.');
+      //   if (spl[spl.length-1].toLowerCase() == 'csv') {
+      //     $.ajax({
+      //       url:"upload.php",
+      //       data:$("#upload-form").serialize(),
+      //       type:"POST",
+      //       success:function(data){
+      //         alert(data);
+      //       }
+      //     })  
+      //     // $('.up-error').html("it is allowed");
+      //   }
+      //   else{
+      //     $('.up-error').html("Only CSV is allowed");
+      //   }
+      // });
+      $('#dwn_name').focusout(function(){
+        var name = $("#dwn_name").val().toLowerCase();
+        if(/^[0-9]+$/.test(name) == false || name != "all"){  
+          $("#dwn-error").html("Invalid Input");
+        }
+      })
+  });
+  
   </script>
   <header>
     <nav>
@@ -109,7 +147,7 @@ $row2 = mysqli_fetch_array($res2);
             <button class="add-users">Add Users</button>
             <button class="view-users">View Users</button>
           <button class="upload">Upload</button>
-          <button class="download">Download</button>
+          <button class="download" onclick="down_val()">Download</button>
         </div>
       </div>
     </section>
@@ -171,12 +209,44 @@ $row2 = mysqli_fetch_array($res2);
               </tbody>
             </table>
           </div>
-
         </div>
+    </div>
+    <div class="popup-upload">
+      <div class="popup-upload-view">
+        <h4 class="upload-clo">+</h4>
+        <div class="upload-form-div">
+          <form method="post" action="upload.php" enctype="multipart/form-data" id="upload-form">
+            <label for="file_name">Choose File</label>
+            <input type="file" name="file_name" id="file_name" class="file_name" title="Only .csv files"/>
+            <span class="csv">Only .csv files</span>
+            <input type="submit" name="import" value="import" id="up-submit"/>
+           </form>
+        </div>
+        <div class="upload-error">
+          <p id='up-error' class="up-error"></p>
+        </div>
+      </div>
+    </div>
+    <div class="popup-download">
+      <div class="popup-download-view">
+        <h4 class="download-clo">+</h4>
+        <div class="download-form-div">
+          <form method="post" action="download.php" enctype="multipart/form-data" id="download-form">
+            <label for="dwn_name">Year or All </label>
+            <input type="text" name="dwn_name" id="dwn_name" class="dwn_name" placeholder="2019 or all" />
+            <input type="submit" name="export" value="export" id="dwn-submit"/>
+          </form>
+        </div>
+        <div class="download-error">
+          <p id='dwn-error' class="dwn-error"></p>
+        </div>
+      </div>
     </div>
   <script src="js/app.js"></script>
   <script src="js/add_user_modal.js"></script>
   <script src="js/view_user_modal.js"></script>
+  <script src="js/upload_modal.js"></script>
+  <script src="js/download_modal.js"></script>
 
 </body>
 

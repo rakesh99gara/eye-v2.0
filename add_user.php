@@ -1,8 +1,10 @@
 <?php
     include 'db.php';
     $uname = $_POST['uname'];
+    $uname = strtolower($uname);
     $pass = $_POST['pass'];
-    $utype=$_POST['utype'];
+    $utype = $_POST['utype'];
+    $utype = strtolower($utype);
     if($uname=='')
     {
         print_r(1);

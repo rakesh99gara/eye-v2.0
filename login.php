@@ -2,8 +2,10 @@
 session_start();
 $flag=0;
 $username = $_POST['uname'];
+$username = strtolower($username);
 $password = $_POST['pass'];
 $utype = $_POST['utype'];
+$utype = strtolower($utype);
 $_SESSION["un"]=$username;
 include 'db.php';
 
