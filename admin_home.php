@@ -113,7 +113,7 @@ $row2 = mysqli_fetch_array($res2);
         if(/^[0-9]+$/.test(name) == false || name != "all"){  
           $("#dwn-error").html("Invalid Input");
         }
-      })
+      });
   });
   
   </script>
@@ -220,7 +220,7 @@ $row2 = mysqli_fetch_array($res2);
             <input type="file" name="file_name" id="file_name" class="file_name" title="Only .csv files"/>
             <span class="csv">Only .csv files</span>
             <input type="submit" name="import" value="import" id="up-submit"/>
-           </form>
+          </form>
         </div>
         <div class="upload-error">
           <p id='up-error' class="up-error"></p>

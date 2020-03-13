@@ -4,9 +4,9 @@ session_start();
 require('fpdf17/fpdf.php');
     include 'db.php';
 
-    $scode = $_SESSION['s_scode'];
-    $date = $_SESSION['s_date'];
-    $sadno = $_SESSION['s_adno'];
+    $scode = $_REQUEST['scode'];
+    $date = $_REQUEST['date'];
+    $sadno = $_REQUEST['aadhar'];
    
     
     $school_query = "SELECT * FROM school WHERE scode="."$scode"." AND date_of_visit="."'$date'";
