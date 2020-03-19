@@ -16,6 +16,7 @@ $row2 = mysqli_fetch_array($res2);
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/home.css">
   <script src="js/jquery.js"></script>
+  <script src="js/jquery.form.js"></script>
   <title>MSHE|HOME</title>
 </head>
 
@@ -108,9 +109,31 @@ $row2 = mysqli_fetch_array($res2);
       //     $('.up-error').html("Only CSV is allowed");
       //   }
       // });
+      $('#upload-form').ajaxForm({
+        var bar = $('#bar');
+        var percent = $('#percent');
+        beforeSubmit: function() {
+          // document.getElementById("progress_div").style.display="block";
+          $('#progress_div').css('display','block');
+          var percentVal = '0%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+          var percentVal = percentComplete + '%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+        },
+        success: function() {
+          var percentVal = '100%';
+          bar.width(percentVal);
+          percent.html(percentVal);
+        },
+      }); 
+
       $('#dwn_name').focusout(function(){
         var name = $("#dwn_name").val().toLowerCase();
-        if(/^[0-9]+$/.test(name) == false || name != "all"){  
+        if(/^[0-9]+$/.test(name) == false || name != "all" || name==''){  
           $("#dwn-error").html("Invalid Input");
         }
       });
@@ -224,6 +247,10 @@ $row2 = mysqli_fetch_array($res2);
         </div>
         <div class="upload-error">
           <p id='up-error' class="up-error"></p>
+        </div>
+        <div class='progress' id="progress_div">
+          <div class='bar' id='bar1'></div>
+          <div class='percent' id='percent1'>0%</div>
         </div>
       </div>
     </div>
