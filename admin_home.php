@@ -89,54 +89,56 @@ $row2 = mysqli_fetch_array($res2);
           $('.up-error').html("Only CSV is allowed");
         } 
       });
-      // $('#upload-form').submit(function(e){
-      //   e.preventDefault();
-      //   var f_name = $(".file_name").val();
-      //   // alert(f_name);
-      //   var spl = f_name.split('.');
-      //   if (spl[spl.length-1].toLowerCase() == 'csv') {
-      //     $.ajax({
-      //       url:"upload.php",
-      //       data:$("#upload-form").serialize(),
-      //       type:"POST",
-      //       success:function(data){
-      //         alert(data);
-      //       }
-      //     })  
-      //     // $('.up-error').html("it is allowed");
-      //   }
-      //   else{
-      //     $('.up-error').html("Only CSV is allowed");
-      //   }
-      // });
-      $('#upload-form').ajaxForm({
-        var bar = $('#bar');
-        var percent = $('#percent');
-        beforeSubmit: function() {
-          // document.getElementById("progress_div").style.display="block";
-          $('#progress_div').css('display','block');
-          var percentVal = '0%';
-          bar.width(percentVal);
-          percent.html(percentVal);
-        },
-        uploadProgress: function(event, position, total, percentComplete) {
-          var percentVal = percentComplete + '%';
-          bar.width(percentVal);
-          percent.html(percentVal);
-        },
-        success: function() {
-          var percentVal = '100%';
-          bar.width(percentVal);
-          percent.html(percentVal);
-        },
-      }); 
-
       $('#dwn_name').focusout(function(){
         var name = $("#dwn_name").val().toLowerCase();
         if(/^[0-9]+$/.test(name) == false || name != "all" || name==''){  
           $("#dwn-error").html("Invalid Input");
         }
       });
+
+
+      $("#upload-form").on('submit',(function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: "upload.php",
+          type: "POST",
+          data:  new FormData(this),
+          dataType: "json",
+          contentType: false,
+          cache: false,
+          processData:false,
+          beforeSend : function()
+          {
+            //$("#preview").fadeOut();
+            $("#up-error").fadeOut();
+          },
+          success: function(data)
+          {
+            if(data[3] == 0)
+            {
+              $(".head-details").html(data[0]);
+              $(".head-details").css("color","green");
+              $(".tot-count").html();
+              $(".popup-upload-div").css("display","none");
+              $(".popup-upload-details").css("display","flex");
+              $("#upload-details-table").css("display","none");
+            }
+            else
+            {
+              $(".head-details").html(data[0]);
+              $(".head-details").css("color","red");
+              $(".tot-count").html(data[3]+" records");
+              $(".popup-upload").css("display","none");
+              $(".popup-upload-details").css("display","flex");
+              $("#upload-details-table").html(data[1]+data[2]);
+            }
+          },
+          error: function(e) 
+          {
+            $("#up-error").html(e).fadeIn();
+          }          
+        });
+      }));
   });
   
   </script>
@@ -167,8 +169,8 @@ $row2 = mysqli_fetch_array($res2);
           <h4>No. of Students :: <span><?php print_r($row2['count'])?></span></h4>
         </div>
         <div class="buttons">
-            <button class="add-users">Add Users</button>
-            <button class="view-users">View Users</button>
+          <button class="add-users">Add Users</button>
+          <button class="view-users">View Users</button>
           <button class="upload">Upload</button>
           <button class="download" onclick="down_val()">Download</button>
         </div>
@@ -238,9 +240,9 @@ $row2 = mysqli_fetch_array($res2);
       <div class="popup-upload-view">
         <h4 class="upload-clo">+</h4>
         <div class="upload-form-div">
-          <form method="post" action="upload.php" enctype="multipart/form-data" id="upload-form">
+          <form method="post" enctype="multipart/form-data" id="upload-form">
             <label for="file_name">Choose File</label>
-            <input type="file" name="file_name" id="file_name" class="file_name" title="Only .csv files"/>
+            <input type="file" name="file_name" accept=".csv" id="file_name" class="file_name" title="Only .csv files"/>
             <span class="csv">Only .csv files</span>
             <input type="submit" name="import" value="import" id="up-submit"/>
           </form>
@@ -254,6 +256,27 @@ $row2 = mysqli_fetch_array($res2);
         </div>
       </div>
     </div>
+    
+    <div class="popup-upload-details">
+      <div class="popup-upload-view-details">
+        <h4 class="upload-details-clo">+</h4>
+        <div class="upload-details">
+          <div class="head-details"></div>
+          <h4 class="tot-count"></h4>
+          <div class="update-details-div">
+            <table id="upload-details-table">
+            
+            </table>
+          </div>
+          
+
+        </div>
+      </div>
+    </div>
+
+
+
+
     <div class="popup-download">
       <div class="popup-download-view">
         <h4 class="download-clo">+</h4>
@@ -269,10 +292,13 @@ $row2 = mysqli_fetch_array($res2);
         </div>
       </div>
     </div>
+
+
   <script src="js/app.js"></script>
   <script src="js/add_user_modal.js"></script>
   <script src="js/view_user_modal.js"></script>
   <script src="js/upload_modal.js"></script>
+  <script src="js/upload_details_modal.js"></script>
   <script src="js/download_modal.js"></script>
 
 </body>
