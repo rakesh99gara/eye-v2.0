@@ -83,6 +83,137 @@ nav {
   z-index: 3;
 }
 
+.view_school_btns {
+  flex: 1;
+  width: 100%;
+  margin-bottom: 20px;
+  height: auto;
+}
+.view-school {
+  border: none;
+  background: black;
+  color: white;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 2vh;
+  font-family: PopRegular;
+  letter-spacing: 0.15vh;
+}
+
+.view-student {
+  border: none;
+  background: black;
+  color: white;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 2vh;
+  font-family: PopRegular;
+  letter-spacing: 0.15vh;
+  float: right;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.stu-delete-btn:hover {
+  cursor: pointer;
+}
+.stu-delete-btn img {
+  height: 25px;
+  width: 25px;
+}
+
+.stu-update-btn a img {
+  height: 30px;
+  width: 30px;
+}
+
+.print-btn a img {
+  height: 30px;
+  width: 30px;
+}
+
+.popup-cng-pwd {
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.popup-content-cng-pwd {
+  height: 350px;
+  width: 380px;
+  background-image: linear-gradient(to right, #efefbb, #d4d3dd);
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+}
+.popup-content-cng-pwd h4 {
+  font-size: 3vh;
+  color: #52565a;
+  letter-spacing: 0.2vh;
+  font-weight: 100;
+  margin-bottom: 10px;
+}
+
+.popup-content-cng-pwd p {
+  font-style: oblique;
+}
+
+.cng-pwd-close {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  font-size: 3vh;
+  transform: rotate(45deg);
+  cursor: pointer;
+  color: #2c2c2c;
+}
+
+.cng-pwd-close:hover {
+  color: #ec7373;
+}
+
+.cng-pwd-error {
+  display: block;
+}
+
+.cng-pwd-btn {
+  border: none;
+  background: black;
+  color: white;
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.5vh;
+  font-family: PopRegular;
+  letter-spacing: 0.15vh;
+  margin-top: 5px;
+  box-shadow: 6px 6px 29px -4px rgba(0, 0, 0, 0.75);
+}
+
+.cng-pwd,
+.re-cng-pwd {
+  margin: 20px auto;
+  display: block;
+  width: 70%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f5e4e4;
+}
+
+.cng-pwd:focus,
+.re-cng-pwd:focus {
+  background-color: rgb(171, 197, 246);
+}
+
 @media screen and (max-width: 768px) {
   body {
     overflow-y: hidden;
@@ -105,7 +236,7 @@ nav {
     flex-direction: column;
     align-items: center;
     width: 50%;
-    z-index: 0;
+    z-index: 5;
     transform: translateY(-125%);
     transition: transform 0.5s ease-in;
   }

@@ -1,6 +1,22 @@
 <?php
   include 'db.php';
-  session_start();
+
+  
+session_start();
+if($_SESSION["un"]==true && $_SESSION["user_type"]==true){
+    $_SESSION["un"]=$_SESSION["un"];
+    $_SESSION["user_type"] = $_SESSION["user_type"];
+}
+else{
+    echo "<script>window.location='index.html'</script>";
+}
+
+
+  $aadhar = $_GET['aadhar'];
+  $date_of_visit = $_GET['date'];
+  $_SESSION['aadhar'] = $aadhar;
+  $_SESSION['date_of_visit'] = $date_of_visit;
+
 ?>
 
 <!DOCTYPE html>
@@ -18,90 +34,12 @@
   <body>
     <script>
       $(document).ready(function() {
-        $("#textcomplaintright").hide();
-        $("#textcomplaintleft").hide();
-        var a = $("#complaintsright").val();
-        var b = $("#complaintsleft").val();
-        if (a == "Others") {
-          $("#textcomplaintright").show();
-        }
-        if (b == "Others") {
-          $("#textcomplaintleft").show();
-        }
-        if ($("#oth").prop("checked")) {
-          $("#advice").show();
-        } else {
-          $("#advice").hide();
-          $("#advice").val("");
-        }
-        $("#complaintsright").change(function() {
-          var c = $("#complaintsright").val();
-          if (c == "Others") {
-            $("#textcomplaintright").show();
-          } else {
-            $("#textcomplaintright").hide();
-            $("#textcomplaintright").val("");
-            $("#textcomplaintright").css("background", "rgb(232, 232, 231)");
-            $("#spntextcomplaintright").hide();
-          }
-        });
-        $("#complaintsleft").change(function() {
-          var d = $("#complaintsleft").val();
-          if (d == "Others") {
-            $("#textcomplaintleft").show();
-          } else {
-            $("#textcomplaintleft").hide();
-            $("#textcomplaintleft").val("");
-            $("#textcomplaintleft").css("background", "rgb(232, 232, 231)");
-            $("#spntextcomplaintleft").hide();
-          }
-        });
-
-        $("#oth").click(function() {
-          if ($("#oth").prop("checked")) {
-            $("#advice").show();
-          } else {
-            $("#advice").hide();
-            $("#advice").val("");
-            $("#advice").css("background", "rgb(232, 232, 231)");
-            $("#spnadvice").hide();
-          }
-        });
-
-        $("#student-form").on('submit',function(e){
-          e.preventDefault();
-            $.ajax({
-              url: $("#student-form").attr("action"),
-              type: "POST",
-              data: $("#student-form").serialize(),
-              success: function(data) {
-                if(data == 1){
-                  $("#student-form").trigger("reset");
-                  var con = confirm(
-                    "Do you want printed receipt ?"
-                  );
-                  if (!con) {
-                  } else {
-                    $("#student-form").trigger("reset");
-                    window.location = "receipt.php";
-                  }
-                }
-                else{
-                  con = confirm("Student details already entered. Want to clear the fields ?");
-                  if(con){
-                    $("#student-form").trigger("reset");
-                  }
-                }
-              }
-            });
-        });
-
-        $("#adno").blur(function(){
-      var temp = $("#adno").val();
-      mydata ='temp=' + temp;
-      $.ajax({
+          var aadhar = "<?php echo $aadhar; ?>";
+          var date = "<?php echo $date_of_visit; ?>";
+          mydata ='aadhar=' + aadhar +"&date_of_visit=" + date;
+          $.ajax({
         type:"POST",
-        url:"set_student_values.php",
+        url:"set_update_student_values.php",
         data:mydata,
         dataType:"json",
         success:function(x){
@@ -227,14 +165,131 @@
           var jao = insert(JSON.stringify(x.advices));
           if(jao!="no"){
               $("#oth").attr('checked',true);
-              $("#advice").val(jao);
           }
+          var ja = insert(JSON.stringify(x.advices));
+          $("#advice").val(ja);
+          $("#advice").show();
         },
         fail:function(){
           alert("areyy suppu u failed!!");
         }
       });
-    });
+
+      $("#textcomplaintright").hide();
+        $("#textcomplaintleft").hide();
+        var a = $("#complaintsright").val();
+        var b = $("#complaintsleft").val();
+        if (a == "Others") {
+          $("#textcomplaintright").show();
+        }
+        if (b == "Others") {
+          $("#textcomplaintleft").show();
+        }
+        if ($("#oth").prop("checked")) {
+          $("#advice").show();
+        } else {
+          $("#advice").hide();
+          $("#advice").val("");
+        }
+        $("#complaintsright").change(function() {
+          var c = $("#complaintsright").val();
+          if (c == "Others") {
+            $("#textcomplaintright").show();
+          } else {
+            $("#textcomplaintright").hide();
+            $("#textcomplaintright").val("");
+            $("#textcomplaintright").css("background", "rgb(232, 232, 231)");
+            $("#spntextcomplaintright").hide();
+          }
+        });
+        $("#complaintsleft").change(function() {
+          var d = $("#complaintsleft").val();
+          if (d == "Others") {
+            $("#textcomplaintleft").show();
+          } else {
+            $("#textcomplaintleft").hide();
+            $("#textcomplaintleft").val("");
+            $("#textcomplaintleft").css("background", "rgb(232, 232, 231)");
+            $("#spntextcomplaintleft").hide();
+          }
+        });
+
+        $("#oth").click(function() {
+          if ($("#oth").prop("checked")) {
+            $("#advice").show();
+          } else {
+            $("#advice").hide();
+            $("#advice").val("");
+            $("#advice").css("background", "rgb(232, 232, 231)");
+            $("#spnadvice").hide();
+          }
+        });
+
+        $("#update-student-form").on('submit',function(e){
+          e.preventDefault();
+            $.ajax({
+              url: $("#update-student-form").attr("action"),
+              type: "POST",
+              data: $("#update-student-form").serialize(),
+              success: function(data) {
+                if(data == 1){
+                  $("update-student-form").trigger("reset");
+                  alert("Data Updated Successfully");
+                  window.location = "view_student.php";
+                }
+                else{
+                  alert("Error in updating data");
+                }
+              }
+            });
+        });
+
+
+        $(".logout").click(function(){
+        var name = "<?php print_r($_SESSION['un']) ?>";
+        var a = confirm(name + " Are you sure to logout ?");
+        if(a)
+        {
+          window.location = "logout.php";
+        }
+      });
+
+
+
+      $('.cng-pwd-btn').click(function(){
+        var pwd = $("#cng-pwd").val();
+        var repwd = $("#re-cng-pwd").val();
+        if(pwd===repwd && pwd.length>=3){
+          $.ajax({
+            type:"POST",
+            url:"cng_pwd.php",
+            data:{
+              pwd:pwd,
+              repwd:repwd,
+            },
+            success:function(x){
+              if(x==1){
+                alert("Password Changed Successfully");
+                setTimeout(() => { document.location.reload(true); }, 100);
+              }
+              else{
+                $('.cng-pwd-error').html("Error occured.");
+              }
+            }
+
+          });
+        }
+        else{
+          $('.cng-pwd-error').html("password didnot match.<br>Minimum 3 characters required.");
+        }
+        
+      });
+        
+
+
+
+
+      
       });
     </script>
     <header>
@@ -243,11 +298,11 @@
           <h4>MSHE</h4>
         </div>
         <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">View Details</a></li>
-          <li><a href="#">Enter details</a></li>
-          <li><a href="#">Change Password</a></li>
-          <li><a href="#">Log out</a></li>
+          <li class="home"><a href="<?php $_SESSION['user_type']== 'admin'? print_r('admin_home.php'): print_r('home.php'); ?>">Home</a></li>
+          <li class="view-details"><a href="view_school.php">View Details</a></li>
+          <li class="enter-details"><a href="enter_school.php">Enter details</a></li>
+          <li class="change-password"><a href="#">Change Password</a></li>
+          <li class="logout"><a href="#">Log out</a></li>
         </ul>
         <div class="burger">
           <div class="line1"></div>
@@ -263,7 +318,7 @@
             <h4>Update Student Details</h4>
           </div>
           <div class="student-form">
-            <form action="student_details.php" method="POST" id="student-form">
+            <form action="update_student_details.php" method="POST" id="update-student-form">
               <label for="idno">ID No.</label>
               <input type="text" name="idno" id="idno" placeholder="ID No." />
               <span class="error" id="spnidno"></span>
@@ -273,6 +328,8 @@
                 name="adno"
                 id="adno"
                 placeholder="Aadhar No"
+                value="<?php echo $aadhar;?>" 
+                readonly
               />
               <span class="error" id="spnadno"></span>
               <label for="name">Name</label>
@@ -2088,6 +2145,17 @@
             </form>
           </div>
         </div>
+        <div class="popup-cng-pwd">
+          <div class="popup-content-cng-pwd">
+            <h4 class="cng-pwd-close">+</h4>
+            <h4>Change Password</h4>
+            <p>Hello <?php print_r($_SESSION['un']); ?>!!</p>
+            <input type="password" name="cng-pwd" class="cng-pwd" id="cng-pwd" placeholder="Password" />
+            <input type="password" name="re-cng-pwd" class="re-cng-pwd" id="re-cng-pwd" placeholder="Re-type Password" />
+            <span class="cng-pwd-error" id="cng-pwd-error"></span>
+            <button class="cng-pwd-btn">Change</button>
+          </div>
+        </div>
       </section>
     </main>
     <footer>
@@ -2096,5 +2164,6 @@
       </div>
     </footer>
     <script src="js/app.js"></script>
+    <script src="js/cng_pwd.js"></script>
   </body>
 </html>

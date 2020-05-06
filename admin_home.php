@@ -1,4 +1,14 @@
 <?php
+
+session_start();
+if($_SESSION["un"]==true && $_SESSION["user_type"]==true){
+    $_SESSION["un"]=$_SESSION["un"];
+    $_SESSION["user_type"] = $_SESSION["user_type"];
+}
+else{
+    echo "<script>window.location='index.html'</script>";
+}
+
 include 'db.php';
 $qur1 = "SELECT COUNT(*) as count FROM school";
 $qur2 = "SELECT COUNT(*) as count FROM student";
@@ -66,21 +76,64 @@ $row2 = mysqli_fetch_array($res2);
           }
         });
       });
+
+
+
+      $('.cng-pwd-btn').click(function(){
+        var pwd = $("#cng-pwd").val();
+        var repwd = $("#re-cng-pwd").val();
+        if(pwd===repwd && pwd.length>=3){
+          $.ajax({
+            type:"POST",
+            url:"cng_pwd.php",
+            data:{
+              pwd:pwd,
+              repwd:repwd,
+            },
+            success:function(x){
+              if(x==1){
+                alert("Password Changed Successfully");
+                setTimeout(() => { document.location.reload(true); }, 100);
+              }
+              else{
+                $('.cng-pwd-error').html("Error occured.");
+              }
+            }
+
+          });
+        }
+        else{
+          $('.cng-pwd-error').html("password didnot match.<br>Minimum 3 characters required.");
+        }
+        
+      });
+
+
+
       $(".delete").click(function(){
         var uname = $(this).attr('id');
         mydata = 'uname=' + uname ; 
         con = confirm("Are you sure to delete "+uname+" ??");
         if(con){
           $.ajax({
-          type: "POST",
-          url: "del_user.php",
-          data: mydata,
-          success: function(){
-            setTimeout(() => { document.location.reload(true); }, 100);
-          }
-        });
+            type: "POST",
+            url: "del_user.php",
+            data: mydata,
+            success: function(x){
+              if(x==1){
+                alert("User Deleted Successfully");
+                setTimeout(() => { document.location.reload(true); }, 100);
+              }
+              else{
+                alert("Error in deleting.");
+              }
+              
+            }
+          });
         }
       });
+
+
       $('#file_name').change(function() {
         var f_name = $(".file_name").val();
         // alert(f_name);
@@ -89,6 +142,8 @@ $row2 = mysqli_fetch_array($res2);
           $('.up-error').html("Only CSV is allowed");
         } 
       });
+
+
       $('#dwn_name').focusout(function(){
         var name = $("#dwn_name").val().toLowerCase();
         if(/^[0-9]+$/.test(name) == false || name != "all" || name==''){  
@@ -139,6 +194,18 @@ $row2 = mysqli_fetch_array($res2);
           }          
         });
       }));
+
+      $(".logout").click(function(){
+        var name = "<?php print_r($_SESSION['un']) ?>";
+        var a = confirm(name + " Are you sure to logout ?");
+        if(a)
+        {
+          window.location = "logout.php";
+        }
+      });
+
+      
+
   });
   
   </script>
@@ -148,11 +215,12 @@ $row2 = mysqli_fetch_array($res2);
         <h4>MSHE</h4>
       </div>
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">View Details</a></li>
-        <li><a href="#">Enter details</a></li>
-        <li><a href="#">Change Password</a></li>
-        <li><a href="#">Log out</a></li>
+        
+        <li class="home"><a href="<?php $_SESSION['user_type']== 'admin'? print_r('admin_home.php'): print_r('home.php'); ?>">Home</a></li>
+        <li class="view-details"><a href="view_school.php">View Details</a></li>
+        <li class="enter-details"><a href="enter_school.php">Enter details</a></li>
+        <li class="change-password"><a href="#">Change Password</a></li>
+        <li class="logout"><a href="#">Log out</a></li>
       </ul>
       <div class="burger">
         <div class="line1"></div>
@@ -254,8 +322,110 @@ $row2 = mysqli_fetch_array($res2);
           <div class='bar' id='bar1'></div>
           <div class='percent' id='percent1'>0%</div>
         </div>
+        <div class="data-format">
+              <div><a>Show Data Format</a></div>
+        </div>
       </div>
     </div>
+
+
+
+    <div class="popup-cng-pwd">
+        <div class="popup-content-cng-pwd">
+          <h4 class="cng-pwd-close">+</h4>
+          <h4>Change Password</h4>
+          <p>Hello <?php print_r($_SESSION['un']); ?>!!</p>
+          <input type="password" name="cng-pwd" class="cng-pwd" id="cng-pwd" placeholder="Password" />
+          <input type="password" name="re-cng-pwd" class="re-cng-pwd" id="re-cng-pwd" placeholder="Re-type Password" />
+          <span class="cng-pwd-error" id="cng-pwd-error"></span>
+          <button class="cng-pwd-btn">Change</button>
+        </div>
+    </div>
+
+    
+
+    <!-- <div class="popup-format">
+      <div class="popup-format-view">
+        <h4 class="format-clo">+</h4>
+        <div class="table-format">
+          <table class="format">
+              
+              <tr>
+                <td colspan="3">Student ID</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td colspan="3">Aadhar No / Unique ID</td>
+                <td>1234567890</td>
+              </tr>
+              <tr>
+                <td colspan="3">Name</td>
+                <td>XXXXX</td>
+              </tr>
+              <tr>
+                <td colspan="3">Age</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td colspan="3">Gender</td>
+                <td>female</td>
+              </tr>
+              <tr>
+                <td colspan="3">Father Name</td>
+                <td>XXXXXX</td>
+              </tr>
+              <tr>
+                <td colspan="3">Mother Name</td>
+                <td>XXXXXX</td>
+              </tr>
+              <tr>
+                <td colspan="3">Contact</td>
+                <td>1111111111</td>
+              </tr>
+              <tr>
+                <td colspan="3">Class</td>
+                <td>6</td>
+              </tr>
+              <tr>
+                <td colspan="3">Section</td>
+                <td>A</td>
+              </tr>
+              <tr>
+                <td colspan="3">Medium</td>
+                <td>Telugu</td>
+              </tr>
+              <tr>
+                <td rowspan="2">History</td>
+                <td colspan="2">Right Eye</td>
+                <td>No complaints</td>
+              </tr>
+              <tr>
+                <td colspan="2">Left Eye</td>
+                <td>No complaints</td>
+              </tr>
+              <tr>
+                <td rowspan="4">Unaided</td>
+                <td rowspan="2">Right Eye</td>
+              </tr>
+
+          
+          </table>
+        </div>
+      </div>
+    </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     <div class="popup-upload-details">
       <div class="popup-upload-view-details">
@@ -300,6 +470,7 @@ $row2 = mysqli_fetch_array($res2);
   <script src="js/upload_modal.js"></script>
   <script src="js/upload_details_modal.js"></script>
   <script src="js/download_modal.js"></script>
+  <script src="js/cng_pwd.js"></script>
 
 </body>
 

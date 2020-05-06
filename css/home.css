@@ -20,11 +20,9 @@
   src: url("../fonts/Poppins-LightItalic.ttf");
 }
 body {
-  /* background: #005AA7; 
-      background: -webkit-linear-gradient(to top, #FFFDE4, #005AA7);  */
-  /* background-image: linear-gradient(to top, #FFFDE4, #005AA7);  */
   font-family: PopLight;
   background-image: linear-gradient(to right, #787ff6, #4adede);
+  /* background-image: linear-gradient(to right, #434343, #000000); */
   padding-bottom: 2vh;
 }
 
@@ -280,6 +278,11 @@ input {
   border: none;
   background-color: #f5e4e4;
 }
+
+input:focus {
+  background-color: rgb(171, 197, 246);
+}
+
 select {
   /* margin: 20px auto; */
   margin: auto;
@@ -290,9 +293,7 @@ select {
   border: none;
   background-color: #f5e4e4;
 }
-input:focus {
-  background-color: rgb(171, 197, 246);
-}
+
 .popup-content span {
   display: block;
   margin: 20px auto;
@@ -373,7 +374,7 @@ input:focus {
   text-align: center;
   border-radius: 5px;
   position: relative;
-  overflow: scroll;
+  overflow: auto;
 }
 .usr-table {
   width: 90%;
@@ -457,7 +458,7 @@ input:focus {
   padding: 20px;
   border-radius: 5px;
   position: relative;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .upload-details-clo {
   position: absolute;
@@ -561,6 +562,70 @@ table#upload-details-table th {
   display: inline-block;
   top: 3px;
   left: 48%;
+}
+
+.popup-cng-pwd {
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.popup-content-cng-pwd {
+  height: 350px;
+  width: 380px;
+  background-image: linear-gradient(to right, #efefbb, #d4d3dd);
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+}
+.popup-content-cng-pwd h4 {
+  font-size: 3vh;
+  color: #52565a;
+  letter-spacing: 0.2vh;
+  font-weight: 100;
+  margin-bottom: 10px;
+}
+
+.popup-content-cng-pwd p {
+  font-style: oblique;
+}
+
+.cng-pwd-close {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  font-size: 3vh;
+  transform: rotate(45deg);
+  cursor: pointer;
+  color: #2c2c2c;
+}
+
+.cng-pwd-close:hover {
+  color: #ec7373;
+}
+
+.cng-pwd-error {
+  display: block;
+}
+
+.cng-pwd-btn {
+  border: none;
+  background: black;
+  color: white;
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.5vh;
+  font-family: PopRegular;
+  letter-spacing: 0.15vh;
+  margin-top: 5px;
+  box-shadow: 6px 6px 29px -4px rgba(0, 0, 0, 0.75);
 }
 
 @media screen and (max-width: 768px) {

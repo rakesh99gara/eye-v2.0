@@ -1,5 +1,16 @@
 <?php
 include 'db.php';
+
+session_start();
+if($_SESSION["un"]==true && $_SESSION["user_type"]==true){
+    $_SESSION["un"]=$_SESSION["un"];
+    $_SESSION["user_type"] = $_SESSION["user_type"];
+}
+else{
+    echo "<script>window.location='index.html'</script>";
+}
+
+
 if (!$link) {
     echo "Not connected";
 } else {

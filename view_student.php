@@ -1,3 +1,17 @@
+<?php
+
+
+session_start();
+if($_SESSION["un"]==true && $_SESSION["user_type"]==true){
+    $_SESSION["un"]=$_SESSION["un"];
+    $_SESSION["user_type"] = $_SESSION["user_type"];
+}
+else{
+    echo "<script>window.location='index.html'</script>";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,6 +36,78 @@
           pagingType: "simple_numbers",
           responsive: true
         });
+
+        $('.view-school').click(function(){
+          window.location = "view_school.php";
+        });
+
+        $(".logout").click(function(){
+        var name = "<?php print_r($_SESSION['un']) ?>";
+        var a = confirm(name + " Are you sure to logout ?");
+        if(a)
+        {
+          window.location = "logout.php";
+        }
+      });
+
+
+      $('.cng-pwd-btn').click(function(){
+        var pwd = $("#cng-pwd").val();
+        var repwd = $("#re-cng-pwd").val();
+        if(pwd===repwd && pwd.length>=3){
+          $.ajax({
+            type:"POST",
+            url:"cng_pwd.php",
+            data:{
+              pwd:pwd,
+              repwd:repwd,
+            },
+            success:function(x){
+              if(x==1){
+                alert("Password Changed Successfully");
+                setTimeout(() => { document.location.reload(true); }, 100);
+              }
+              else{
+                $('.cng-pwd-error').html("Error occured.");
+              }
+            }
+
+          });
+        }
+        else{
+          $('.cng-pwd-error').html("password didnot match.<br>Minimum 3 characters required.");
+        }
+        
+      });
+
+
+      });
+
+
+      $(document).on('click','.stu-delete-btn',function(e){
+        var aadhar = $(this).data('aadhar');
+        var date = $(this).data('date');
+        if(confirm("Are you sure ? ")){
+        $.ajax({
+            type: "POST",
+            url: "delete_student.php",
+            data: {
+              aadhar:aadhar,
+              date:date
+              },
+            success: function(x) {
+              if (x == "1") {
+                alert("Deleted Successfully");
+                setTimeout(() => { document.location.reload(true); }, 100);
+              } else {
+                alert("Error in Deleting.");
+              }
+              // alert(x);
+              
+            }
+          });
+      }
+
       });
     </script>
     <header>
@@ -30,11 +116,11 @@
           <h4>MSHE</h4>
         </div>
         <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">View Details</a></li>
-          <li><a href="#">Enter details</a></li>
-          <li><a href="#">Change Password</a></li>
-          <li><a href="#">Log out</a></li>
+          <li class="home"><a href="<?php $_SESSION['user_type']== 'admin'? print_r('admin_home.php'): print_r('home.php'); ?>">Home</a></li>
+          <li class="view-details"><a href="view_school.php">View Details</a></li>
+          <li class="enter-details"><a href="enter_school.php">Enter details</a></li>
+          <li class="change-password"><a href="#">Change Password</a></li>
+          <li class="logout"><a href="#">Log out</a></li>
         </ul>
         <div class="burger">
           <div class="line1"></div>
@@ -46,10 +132,15 @@
     <main>
       <section>
         <div class="main-details">
+          <div class="view_school_btns">
+            <button class="view-school">View Schools</button>
+            <button class="view-student"  disabled>View Students</button>
+          </div>
           <table
             id="student-table"
             class="cell-border compact stripe student-table"
           >
+            <caption>Student Details</caption>
             <thead>
               <tr>
                 <th rowspan="3">School Code</th>
@@ -77,9 +168,11 @@
                 <th rowspan="3">Refer to Base Hospital</th>
                 <th rowspan="3">Glasses Presented</th>
                 <th rowspan="3">Advice & Remarks</th>
-                <th rowspan="3">Print</th>
-                <th rowspan="3">Update</th>
-                <th rowspan="3">Delete</th>
+                <?php if($_SESSION['user_type']==='admin'){ ?>
+                  <th rowspan="3">Print</th>
+                  <th rowspan="3">Update</th>
+                  <th rowspan="3">Delete</th>
+                <?php } ?>
               </tr>
               <tr>
                 <th rowspan="2">Right Eye</th>
@@ -198,9 +291,11 @@
                                     echo "<td>".$row['hospital_referal']."</td>";
                                     echo "<td>".$row['glasses_presented']."</td>";
                                     echo "<td>".$row['advices']."</td>";
-                                    echo "<td><button class='print-btn'><a href='stu_receipt.php?gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5&aadhar=$row[aadhar]&date=$row[date_of_visit]&scode=$row[scode]&gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5'>Print</a></button></td>";
-                                    echo "<td><button class='stu-update-btn'><a href='update_student.php?gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5&aadhar=$row[aadhar]&date=$row[date_of_visit]&gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5'>Update</a></button></td>";
-                                    echo "<td><button class='stu-delete-btn'><a href='confirmation_delete_student.php?&gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5&aadhar=$row[aadhar]&date=$row[date_of_visit]&gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5'>Delete</a></button></td>";
+                                  if($_SESSION['user_type']=== 'admin'){
+                                    echo "<td><span class='print-btn'><a href='stu_receipt.php?gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5&aadhar=$row[aadhar]&date=$row[date_of_visit]&scode=$row[scode]&gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5'><img src='photos/print.png' alt='edit' srcset=''></a></span></td>";
+                                    echo "<td><span class='stu-update-btn'><a href='update_student.php?gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5&aadhar=$row[aadhar]&date=$row[date_of_visit]&gs_l=psy-ab.3..33i160.5257.15070..15431...0.2..1.748.4868.0j3j3j3j3j1j1......0....1..gws-wiz.......0i71j0i22i30j33i22i29i30j33i21.hEsaSku_vrk&ved=0ahUKEwi1_peanZ_oAhVVyDgGHcULC2oQ4dUDCAs&uact=5'><img src='photos/edit.png' alt='edit' srcset=''></a></span></td>";
+                                    echo "<td><span class='stu-delete-btn' data-aadhar=$row[aadhar] data-date=$row[date_of_visit] ><img src='photos/delete_view.png' alt='delete' srcset=''></span></td>";
+                                  }                                   
                                 echo "</tr>";
 				            }
 			            }else{
@@ -210,6 +305,17 @@
             </tbody>
           </table>
         </div>
+        <div class="popup-cng-pwd">
+          <div class="popup-content-cng-pwd">
+            <h4 class="cng-pwd-close">+</h4>
+            <h4>Change Password</h4>
+            <p>Hello <?php print_r($_SESSION['un']); ?>!!</p>
+            <input type="password" name="cng-pwd" class="cng-pwd" id="cng-pwd" placeholder="Password" />
+            <input type="password" name="re-cng-pwd" class="re-cng-pwd" id="re-cng-pwd" placeholder="Re-type Password" />
+            <span class="cng-pwd-error" id="cng-pwd-error"></span>
+            <button class="cng-pwd-btn">Change</button>
+          </div>
+        </div>
       </section>
     </main>
     <footer>
@@ -218,5 +324,6 @@
       </div>
     </footer>
     <script src="js/app.js"></script>
+    <script src="js/cng_pwd.js"></script>
   </body>
 </html>

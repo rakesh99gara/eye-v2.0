@@ -1,6 +1,14 @@
 <?php
   include 'db.php';
   session_start();
+
+if($_SESSION["un"]==true && $_SESSION["user_type"]==true){
+    $_SESSION["un"]=$_SESSION["un"];
+    $_SESSION["user_type"] = $_SESSION["user_type"];
+}
+else{
+    echo "<script>window.location='index.html'</script>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -95,6 +103,7 @@
               }
             });
         });
+        
 
         $("#adno").blur(function(){
       var temp = $("#adno").val();
@@ -227,14 +236,62 @@
           var jao = insert(JSON.stringify(x.advices));
           if(jao!="no"){
               $("#oth").attr('checked',true);
-              $("#advice").val(jao);
           }
+          var ja = insert(JSON.stringify(x.advices));
+          $("#advice").val(ja);
         },
         fail:function(){
           alert("areyy suppu u failed!!");
         }
       });
     });
+
+    $(".logout").click(function(){
+        var name = "<?php print_r($_SESSION['un']) ?>";
+        var a = confirm(name + " Are you sure to logout ?");
+        if(a)
+        {
+          window.location = "logout.php";
+        }
+      });
+
+      $('.cng-pwd-btn').click(function(){
+        var pwd = $("#cng-pwd").val();
+        var repwd = $("#re-cng-pwd").val();
+        if(pwd===repwd && pwd.length>=3){
+          $.ajax({
+            type:"POST",
+            url:"cng_pwd.php",
+            data:{
+              pwd:pwd,
+              repwd:repwd,
+            },
+            success:function(x){
+              if(x==1){
+                alert("Password Changed Successfully");
+                setTimeout(() => { document.location.reload(true); }, 100);
+              }
+              else{
+                $('.cng-pwd-error').html("Error occured.");
+              }
+            }
+
+          });
+        }
+        else{
+          $('.cng-pwd-error').html("password didnot match.<br>Minimum 3 characters required.");
+        }
+        
+      });
+
+
+
+
+
+
+
+
+
       });
     </script>
     <header>
@@ -243,11 +300,11 @@
           <h4>MSHE</h4>
         </div>
         <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">View Details</a></li>
-          <li><a href="#">Enter details</a></li>
-          <li><a href="#">Change Password</a></li>
-          <li><a href="#">Log out</a></li>
+          <li class="home"><a href="<?php $_SESSION['user_type']== 'admin'? print_r('admin_home.php'): print_r('home.php'); ?>">Home</a></li>
+          <li class="view-details"><a href="view_school.php">View Details</a></li>
+          <li class="enter-details"><a href="enter_school.php">Enter details</a></li>
+          <li class="change-password"><a href="#">Change Password</a></li>
+          <li class="logout"><a href="#">Log out</a></li>
         </ul>
         <div class="burger">
           <div class="line1"></div>
@@ -2118,6 +2175,17 @@
             </form>
           </div>
         </div>
+        <div class="popup-cng-pwd">
+        <div class="popup-content-cng-pwd">
+          <h4 class="cng-pwd-close">+</h4>
+          <h4>Change Password</h4>
+          <p>Hello <?php print_r($_SESSION['un']); ?>!!</p>
+          <input type="password" name="cng-pwd" class="cng-pwd" id="cng-pwd" placeholder="Password" />
+          <input type="password" name="re-cng-pwd" class="re-cng-pwd" id="re-cng-pwd" placeholder="Re-type Password" />
+          <span class="cng-pwd-error" id="cng-pwd-error"></span>
+          <button class="cng-pwd-btn">Change</button>
+        </div>
+    </div>
       </section>
     </main>
     <footer>
@@ -2126,5 +2194,6 @@
       </div>
     </footer>
     <script src="js/app.js"></script>
+    <script src="js/cng_pwd.js"></script>
   </body>
 </html>

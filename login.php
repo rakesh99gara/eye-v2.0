@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $flag=0;
 $username = $_POST['uname'];
 $username = strtolower($username);
@@ -9,7 +10,7 @@ $utype = strtolower($utype);
 $_SESSION["un"]=$username;
 include 'db.php';
 
-
+    
 if($utype=='admin')
 {
     $quer = mysqli_query($link,"SELECT * FROM login");
@@ -18,6 +19,8 @@ if($utype=='admin')
         if($row['username'] == $username && $row['password'] == $password && $row['user_type'] == $utype)
         {
             $flag=1; 
+            $_SESSION["un"] = $username;
+            $_SESSION["user_type"] = $utype;
             print_r("1");
         }
     }
@@ -30,6 +33,8 @@ else
         if($row['username'] == $username && $row['password'] == $password && $row['user_type'] == $utype)
         {
             $flag=1; 
+            $_SESSION["un"] = $username;
+            $_SESSION["user_type"] = $utype;
             print_r("2");
         }
     }

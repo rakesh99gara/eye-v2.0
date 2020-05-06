@@ -1,5 +1,15 @@
 <?php
     // print_r($_POST);
+
+    
+session_start();
+if($_SESSION["un"]==true && $_SESSION["user_type"]==true){
+    $_SESSION["un"]=$_SESSION["un"];
+    $_SESSION["user_type"] = $_SESSION["user_type"];
+}
+else{
+    echo "<script>window.location='index.html'</script>";
+}
     session_start();
     extract($_POST);
     $scode = $_SESSION['s_scode'];
