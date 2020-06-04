@@ -117,7 +117,7 @@ $row2 = mysqli_fetch_array($res2);
   </main>
   <footer>
     <div class="foot">
-      <h4>Designed and Developed By MGLUG</h4>
+      <h4>Designed and Developed By MVGRCE</h4>
     </div>
   </footer>
   <script src="js/app.js"></script>

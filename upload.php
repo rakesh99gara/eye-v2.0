@@ -48,6 +48,7 @@ else{
         $arr[3] = $count;
 
         print_r(json_encode($arr));
+        // print_r($query);
     }
     else{
         // print_r("Errors present with following records");
@@ -68,11 +69,71 @@ else{
         $arr[3] = $count;
 
         print_r(json_encode($arr));
+        // print_r($query);
     }
     
     fclose($handle);
 
 
 // print_r("how are you");
+
+// 0 scode
+// 1 date_of_visit
+// 2 sid
+// 3 aadhar
+// 4 stu_name
+// 5 date_of_birth
+// 6 age
+// 7 gender
+// 8 father_name
+// 9 mother_name
+// 10 contact_no
+// 11 class
+// 12 section
+// 13 _medium
+// 14 complaint_right
+// 15 complaint_left
+// 16 unaided_right_dv
+// 17 unaided_right_nv
+// 18 unaided_left_dv
+// 19 unaided_left_nv
+// 20 pg_right_sph
+// 21 pg_right_cyl
+// 22 pg_right_axis
+// 23 pg_right_dv
+// 24 pg_right_nv
+// 25 pg_left_sph
+// 26 pg_left_cyl
+// 27 pg_left_axis
+// 28 pg_left_dv
+// 29 pg_left_nv
+// 30 ar_right_sph
+// 31 ar_right_cyl
+// 32 ar_right_axis
+// 33 ar_left_sph
+// 34 ar_left_cyl
+// 35 ar_left_axis
+// 36 dv_right_sph
+// 37 dv_right_cyl
+// 38 dv_right_axis
+// 39 dv_right_dv
+// 40 dv_right_nv
+// 41 dv_left_sph
+// 42 dv_left_cyl
+// 43 dv_left_axis
+// 44 dv_left_dv
+// 45 dv_left_nv
+// 46 color_vision_right
+// 47 color_vision_left
+// 48 eom_right
+// 49 eom_left
+// 50 anterior_segment_right
+// 51 anterior_segment_left
+// 52 hospital_referal
+// 53 glasses_presented
+// 54 advices
+
+
+
 
 ?>

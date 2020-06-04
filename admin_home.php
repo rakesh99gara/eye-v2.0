@@ -154,6 +154,7 @@ $row2 = mysqli_fetch_array($res2);
 
       $("#upload-form").on('submit',(function(e) {
         e.preventDefault();
+        
         $.ajax({
           url: "upload.php",
           type: "POST",
@@ -241,13 +242,14 @@ $row2 = mysqli_fetch_array($res2);
           <button class="view-users">View Users</button>
           <button class="upload">Upload</button>
           <button class="download" onclick="down_val()">Download</button>
+          
         </div>
       </div>
     </section>
   </main>
   <footer>
     <div class="foot">
-      <h4>Designed and Developed By MGLUG</h4>
+      <h4>Designed and Developed By MVGRCE</h4>
     </div>
   </footer>
     <div class="popup">
@@ -288,7 +290,19 @@ $row2 = mysqli_fetch_array($res2);
               $flag = 0;
               while ($row = mysqli_fetch_array($quer))
               {
-                echo '
+                if($_SESSION['un']==$row['username'])
+                {
+                  echo '
+                  <tr>
+                    <td>'.$row['username'].'</td>
+                    <td>'.$row['password'].'</td>
+                    <td>'.$row['user_type'].'</td>
+                    <td> (you) </td>
+                  </tr>
+                ';
+                }
+                else{
+                  echo '
                   <tr>
                     <td>'.$row['username'].'</td>
                     <td>'.$row['password'].'</td>
@@ -296,6 +310,8 @@ $row2 = mysqli_fetch_array($res2);
                     <td class="delete" id="'.$row['username'].'">'.'<img src="photos/delete.png" alt="delete" srcset="">'.'</td>
                   </tr>
                 ';
+                }
+                
                 $flag = $flag+1;
               }
               ?>
