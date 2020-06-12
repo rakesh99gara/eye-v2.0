@@ -84,10 +84,18 @@ nav {
 }
 
 .view_school_btns {
-  flex: 1;
-  width: 100%;
-  margin-bottom: 20px;
+  position:fixed;
+  display: flex;
+  flex-direction: row;
+  width: inherit;
   height: auto;
+  margin: auto;
+  justify-content: space-between;
+  z-index: 2;
+  background-image: linear-gradient(to right, #787ff6, #4adede);
+  padding: 3vh;
+  
+  
 }
 .view-school {
   border: none;
@@ -108,12 +116,16 @@ nav {
   width: 150px;
   height: 40px;
   cursor: pointer;
-  font-size: 2vh;
+  font-size: 1.5vh;
   font-family: PopRegular;
   letter-spacing: 0.15vh;
   float: right;
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.view-student-table{
+  margin-top:100px
 }
 
 .stu-delete-btn:hover {
@@ -278,7 +290,7 @@ nav {
   width: 95%;
   margin: auto;
   align-items: center;
-  padding: 3vh 3vh 3vh 3vh;
+  padding: 0vh 3vh 3vh 0vh;
   overflow-y: scroll;
 }
 

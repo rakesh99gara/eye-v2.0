@@ -136,6 +136,7 @@ else{
             <button class="view-school">View Schools</button>
             <button class="view-student"  disabled>View Students</button>
           </div>
+          <div class="view-student-table">
           <table
             id="student-table"
             class="cell-border compact stripe student-table"
@@ -304,6 +305,7 @@ else{
                 ?>
             </tbody>
           </table>
+          </div>
         </div>
         <div class="popup-cng-pwd">
           <div class="popup-content-cng-pwd">
